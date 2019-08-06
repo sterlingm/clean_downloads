@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import javax.swing.*;
+import java.lang.System;
 
 
 class CleanDownloads extends JFrame
@@ -19,12 +22,14 @@ class CleanDownloads extends JFrame
     private static ArrayList<File> oldFiles;
     private static ArrayList<File> toDelete;
     private static ArrayList<JCheckBox> checkBoxes;
+    private static ArrayList<Integer> i_toDelete;
     
     // debugging
     private static ArrayList<File> notOldFiles;
     
     private JPanel panel;
     private JScrollPane scrollPane;
+    private JButton deleteButton;
     
     public CleanDownloads() throws IOException
     {
@@ -42,6 +47,46 @@ class CleanDownloads extends JFrame
         // Create gui components
         createCheckBoxes();
         createScrollPane();
+        createButton();
+    }
+
+    public void createButton()
+    {
+        deleteButton = new JButton("Delete");
+        GridBagConstraints positionConst = new GridBagConstraints();
+        positionConst.gridx = 0;
+        positionConst.gridy = oldFiles.size();
+
+        deleteButton.addActionListener(new ActionListener() { 
+            public void actionPerformed(ActionEvent e) { 
+                for(int i=0;i<checkBoxes.size();i++)
+                {
+                    if(checkBoxes.get(i).isSelected())
+                    {
+                        toDelete.add(oldFiles.get(i));
+                        panel.remove(checkBoxes.get(i));
+                    }
+                }
+                deleteFiles();
+
+                //refreshCheckBoxes();
+            }   // end actionPerformed
+          } );
+
+
+        panel.add(deleteButton, positionConst);
+    }
+
+    public void refreshCheckBoxes()
+    {
+        for(int i=0;i<checkBoxes.size();i++)
+        {
+            panel.remove(checkBoxes.get(i));
+        }
+
+        //checkBoxes.clear();
+
+        //createCheckBoxes();
     }
     
     public void createCheckBoxes()
@@ -66,6 +111,8 @@ class CleanDownloads extends JFrame
             positionConst.insets = new Insets(10,10,10,10);
         
             panel.add(temp, positionConst);
+
+            checkBoxes.add(temp);
         }
         
     }
@@ -89,7 +136,17 @@ class CleanDownloads extends JFrame
 
         // Get file path
         String home = System.getProperty("user.home");
-        String downloadsPath = home+"\\Downloads";
+        String os = System.getProperty("os.name");
+        
+        String downloadsPath = home;
+        if(os.startsWith("Windows"))
+        {
+            downloadsPath += "\\Downloads";
+        }
+        else
+        {
+            downloadsPath += "/Downloads";
+        }
         System.out.println(downloadsPath);
 
         // Get list of files
@@ -119,20 +176,19 @@ class CleanDownloads extends JFrame
             {
                     notOldFiles.add(file);
             }
-            //System.out.println("File: "+file.getName()+" Last access time: "+fatr.lastAccessTime().toMillis()+" Diff: "+diff);        
+        }   // end for each
+    }
+
+    public static void deleteFiles()
+    {
+        System.out.println("In deleteFiles");
+        for(File f : toDelete)
+        {
+            System.out.println("Deleting file "+f.getName());
+            f.delete();
         }
 
-        /*System.out.println("oldFiles.size(): "+oldFiles.size());
-        for(File file : oldFiles)
-        {
-                System.out.println("File: "+file.getName());
-        }*/
-        
-        /*System.out.println("notOldFiles.size(): "+notOldFiles.size());
-        for(File file : notOldFiles)
-        {
-                System.out.println("File: "+file.getName());
-        }*/
+        toDelete.clear();
     }
     
     
