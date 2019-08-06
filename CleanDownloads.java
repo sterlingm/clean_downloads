@@ -22,7 +22,6 @@ class CleanDownloads extends JFrame
     private static ArrayList<File> oldFiles;
     private static ArrayList<File> toDelete;
     private static ArrayList<JCheckBox> checkBoxes;
-    private static ArrayList<Integer> i_toDelete;
     
     // debugging
     private static ArrayList<File> notOldFiles;
@@ -52,13 +51,19 @@ class CleanDownloads extends JFrame
 
     public void createButton()
     {
+        // Instantiate object
         deleteButton = new JButton("Delete");
+
+        // Create a position in the gui for the button
         GridBagConstraints positionConst = new GridBagConstraints();
         positionConst.gridx = 0;
         positionConst.gridy = oldFiles.size();
 
+        // Add an action listener to the button
         deleteButton.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) { 
+
+                // Collect all the checked filenames
                 for(int i=0;i<checkBoxes.size();i++)
                 {
                     if(checkBoxes.get(i).isSelected())
@@ -67,27 +72,16 @@ class CleanDownloads extends JFrame
                         panel.remove(checkBoxes.get(i));
                     }
                 }
-                deleteFiles();
 
-                //refreshCheckBoxes();
+                // Delete all the files that were checked
+                deleteFiles();
             }   // end actionPerformed
           } );
 
-
+        // Add the button to the jpanel
         panel.add(deleteButton, positionConst);
     }
 
-    public void refreshCheckBoxes()
-    {
-        for(int i=0;i<checkBoxes.size();i++)
-        {
-            panel.remove(checkBoxes.get(i));
-        }
-
-        //checkBoxes.clear();
-
-        //createCheckBoxes();
-    }
     
     public void createCheckBoxes()
     {
@@ -181,10 +175,8 @@ class CleanDownloads extends JFrame
 
     public static void deleteFiles()
     {
-        System.out.println("In deleteFiles");
         for(File f : toDelete)
         {
-            System.out.println("Deleting file "+f.getName());
             f.delete();
         }
 
