@@ -29,6 +29,7 @@ class CleanDownloads extends JFrame
     private JPanel panel;
     private JScrollPane scrollPane;
     private JButton deleteButton;
+    private JLabel instructionsLabel;
     
     public CleanDownloads() throws IOException
     {
@@ -37,16 +38,26 @@ class CleanDownloads extends JFrame
         
         // Create the panel
         panel = new JPanel();
-        panel.setMinimumSize(new Dimension(450,400));
+        panel.setMinimumSize(new Dimension(600,400));
         panel.setBackground(Color.DARK_GRAY);
         panel.setAlignmentX(LEFT_ALIGNMENT);
         
         add(panel);
         
+        instructionsLabel = new JLabel("Select which files you would like to delete.");
+        instructionsLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        instructionsLabel.setForeground(Color.CYAN);
+
+        GridBagConstraints positionConst = new GridBagConstraints();
+        positionConst.gridx = 0;
+        positionConst.gridy = 0;
+
+        panel.add(instructionsLabel, positionConst);
         // Create gui components
         createCheckBoxes();
         createScrollPane();
         createButton();
+
     }
 
     public void createButton()
@@ -101,7 +112,7 @@ class CleanDownloads extends JFrame
             temp.setHorizontalTextPosition(SwingConstants.LEFT);
             
             positionConst.gridx = 0;
-            positionConst.gridy = i;
+            positionConst.gridy = i+1;
             positionConst.insets = new Insets(10,10,10,10);
         
             panel.add(temp, positionConst);
