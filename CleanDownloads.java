@@ -105,24 +105,20 @@ class CleanDownloads extends JFrame
             File file = new File("not_deleting.txt");
             Scanner scanner = new Scanner(file);
 
-            // Get the filenames
-            while(scanner.hasNext() && scanner.hasNextInt() == false)
-            {
-                notToDelete.add(scanner.nextLine());
-            }
-
-            // Get the threshold
-            while(scanner.hasNext() && scanner.hasNextInt() == false)
-            {
-                scanner.next();
-            }
+            // Get the threshold. It should be the first line of the file.
             if(scanner.hasNextInt())
             {
                 numDaysThreshold = scanner.nextInt();
             }
             else
             {
-                System.out.println("No threshold specified in the file.");
+                System.err.println("No threshold specified in the file. Setting it to default value: 30 days");
+            }
+
+            // Get the filenames
+            while(scanner.hasNext() && scanner.hasNextInt() == false)
+            {
+                notToDelete.add(scanner.nextLine());
             }
 
             scanner.close();
@@ -148,24 +144,49 @@ class CleanDownloads extends JFrame
                     if(oneTime == false)
                     {
                         // Write to the file
-                        BufferedWriter writer = new BufferedWriter(new FileWriter("not_deleting.txt", true));
+                        BufferedWriter writer = new BufferedWriter(new FileWriter("not_deleting.txt", false));
                                 
+                        // Write the threshold for the number of days 
+                        writer.write(Integer.toString(numDaysThreshold)+"\n");
+                        
+                        // Save unchecked files
+                        for(int i=0;i<notToDelete.size();i++)
+                        {
+                            // Get filename
+                            String fileName = notToDelete.get(i);
+
+                            // Write filename
+                            if(i<notToDelete.size()-1)
+                            {
+                                writer.write(fileName+"\n");
+                            }
+                            else
+                            {
+                                writer.write(fileName);
+                            }
+                        }   // end for 
+
                         // Save unchecked files
                         for(int i=0;i<oldFiles.size();i++)
                         {
-                            // Write the filename
+                            // Get the filename
                             String fileName = oldFiles.get(i).getName();
-    
-                            writer.write(fileName+"\n");
+
+                            // Write the filename
+                            if(i<oldFiles.size()-1)
+                            {
+                                writer.write(fileName+"\n");
+                            }
+                            else
+                            {
+                                writer.write(fileName);
+                            }
                                         
                         }   // end for 
 
-                        // Write the threshold for the number of days 
-                        writer.write(Integer.toString(numDaysThreshold));
-
                         // Close the file buffer
                         writer.close();
-                    }                    
+                    }   // end if         
                 }
             catch(Exception e) {System.out.println("Something went wrong with the file not_deleting.txt.");}
             }
