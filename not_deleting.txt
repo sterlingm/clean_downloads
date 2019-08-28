@@ -1,6 +1,4 @@
-30
 430.86-desktop-win10-64bit-international-whql.exe
-angela_white_riley_reed.mp4
 anytree-2.4.3
 archlinux-2018.10.01-x86_64.iso
 Battle.net-Setup.exe
@@ -10,9 +8,6 @@ Core-Temp-setup (3).exe
 Couple Questionnaire - Sterling.doc
 DiscordSetup.exe
 DropboxInstaller.exe
-elementaryos-5.0-stable.20181016.iso
-EpicInstaller-10.2.2-unrealengine (1).msi
-epm.exe
 GameMakerStudio-Installer-2.2.2.413.exe
 GameMakerStudio-Installer-2.2.3.436.exe
 GeForce_Experience_v3.13.1.30.exe
@@ -32,6 +27,7 @@ PlatformerAssets.zip
 PowerISO7-x64.exe
 proofOfInsurance (1).pdf
 putin_SC
+python-3.7.4.exe
 QMK.Toolbox.app.zip
 qmk_toolbox.exe
 qmk_toolbox_install.exe
@@ -57,7 +53,12 @@ trump_mixamo.fbx
 UnityHubSetup.exe
 VirtualBox-5.2.20-125813-Win.exe
 vlc-2.2.8-win32.exe
+vs_community__1479485272.1563922510__rid.30015.exe
 Wedding_May_18th_2019.pdf
 windirstat1_1_2_setup.exe
 winrar-x64-560.exe
 winx-dvd-ripper.exe
+30elementaryos-5.0-stable.20181016.iso
+EpicInstaller-10.2.2-unrealengine (1).msi
+epm.exe
+30

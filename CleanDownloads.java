@@ -104,14 +104,25 @@ class CleanDownloads extends JFrame
         {
             File file = new File("not_deleting.txt");
             Scanner scanner = new Scanner(file);
+
+            // Get the filenames
+            while(scanner.hasNext() && scanner.hasNextInt() == false)
+            {
+                notToDelete.add(scanner.nextLine());
+            }
+
+            // Get the threshold
+            while(scanner.hasNext() && scanner.hasNextInt() == false)
+            {
+                scanner.next();
+            }
             if(scanner.hasNextInt())
             {
                 numDaysThreshold = scanner.nextInt();
             }
-
-            while(scanner.hasNextLine())
+            else
             {
-                notToDelete.add(scanner.nextLine());
+                System.out.println("No threshold specified in the file.");
             }
 
             scanner.close();
@@ -136,24 +147,23 @@ class CleanDownloads extends JFrame
                     // Don't write to file if the 'one-time' option was specified
                     if(oneTime == false)
                     {
-                        BufferedWriter writer = new BufferedWriter(new FileWriter("not_deleting.txt"));
-                    
-                        writer.write(Integer.toString(numDaysThreshold)+"\n");
+                        // Write to the file
+                        BufferedWriter writer = new BufferedWriter(new FileWriter("not_deleting.txt", true));
+                                
                         // Save unchecked files
                         for(int i=0;i<oldFiles.size();i++)
                         {
                             // Write the filename
                             String fileName = oldFiles.get(i).getName();
     
-                            if(i == oldFiles.size()-1)
-                            {
-                                writer.write(fileName);
-                            }
-                            else
-                            {
-                                writer.write(fileName+"\n");
-                            }                    
-                        }   // end for
+                            writer.write(fileName+"\n");
+                                        
+                        }   // end for 
+
+                        // Write the threshold for the number of days 
+                        writer.write(Integer.toString(numDaysThreshold));
+
+                        // Close the file buffer
                         writer.close();
                     }                    
                 }
