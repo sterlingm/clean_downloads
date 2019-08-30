@@ -109,6 +109,7 @@ class CleanDownloads extends JFrame
             if(scanner.hasNextInt())
             {
                 numDaysThreshold = scanner.nextInt();
+                scanner.nextLine();
             }
             else
             {
@@ -143,27 +144,33 @@ class CleanDownloads extends JFrame
                     // Don't write to file if the 'one-time' option was specified
                     if(oneTime == false)
                     {
-                        // Write to the file
-                        BufferedWriter writer = new BufferedWriter(new FileWriter("not_deleting.txt", false));
+                        // Open the file
+                        File f = new File("not_deleting.txt");
+
+                        // Delete the file if it exists. 
+                        // because FileWriter would not consistently clear the file to overwrite everything
+                        if(f.exists())
+                        {
+                            f.delete();
+                        }
+
+                        // Make a file writer
+                        FileWriter fWriter = new FileWriter("not_deleting.txt", false);
+
+                        // BufferedWriter over the FileWrite, apparently this has better performance
+                        BufferedWriter writer = new BufferedWriter(fWriter);
                                 
                         // Write the threshold for the number of days 
-                        writer.write(Integer.toString(numDaysThreshold)+"\n");
+                        writer.write(Integer.toString(numDaysThreshold));
                         
                         // Save unchecked files
                         for(int i=0;i<notToDelete.size();i++)
                         {
                             // Get filename
                             String fileName = notToDelete.get(i);
-
-                            // Write filename
-                            if(i<notToDelete.size()-1)
-                            {
-                                writer.write(fileName+"\n");
-                            }
-                            else
-                            {
-                                writer.write(fileName);
-                            }
+                            
+                            // Write the filename
+                            writer.write("\n"+fileName);
                         }   // end for 
 
                         // Save unchecked files
@@ -171,17 +178,9 @@ class CleanDownloads extends JFrame
                         {
                             // Get the filename
                             String fileName = oldFiles.get(i).getName();
-
+                            
                             // Write the filename
-                            if(i<oldFiles.size()-1)
-                            {
-                                writer.write(fileName+"\n");
-                            }
-                            else
-                            {
-                                writer.write(fileName);
-                            }
-                                        
+                            writer.write("\n"+fileName);                                        
                         }   // end for 
 
                         // Close the file buffer
