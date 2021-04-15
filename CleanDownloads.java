@@ -109,7 +109,13 @@ class CleanDownloads extends JFrame
             if(scanner.hasNextInt())
             {
                 numDaysThreshold = scanner.nextInt();
-                scanner.nextLine();
+
+                // Eat the next line token if it exists. 
+                // It won't exist if the program is running for the first time or if no files are old enough to be added.
+                if(scanner.hasNextLine())
+                {
+                    scanner.nextLine();
+                }
             }
             else
             {
@@ -220,6 +226,10 @@ class CleanDownloads extends JFrame
 
                 // Delete all the files that were checked
                 deleteFiles();
+
+                // Update the GUI
+                revalidate();
+                repaint();
             }   // end actionPerformed
           } );
 
